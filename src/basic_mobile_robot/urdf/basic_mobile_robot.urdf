@@ -1,0 +1,271 @@
+<?xml version="1.0"?> <!-- Declares XML version 1.0 -->
+
+<robot name="basic_mobile_robot"> <!-- Defines the complete robot -->
+
+    <!-- ============================================================ -->
+    <!-- BASE LINK                                                    -->
+    <!-- ============================================================ -->
+
+    <link name="base_link"> <!-- Creates the main robot body -->
+
+        <visual> <!-- Defines the appearance of the base -->
+
+            <geometry> <!-- Defines the visual geometry -->
+
+                <box size="0.6 0.4 0.15"/> <!-- Base dimensions: X=0.6 m, Y=0.4 m, Z=0.15 m -->
+
+            </geometry> <!-- Ends visual geometry -->
+
+        </visual> <!-- Ends visual section -->
+
+
+        <collision> <!-- Defines the physical collision shape -->
+
+            <geometry> <!-- Defines collision geometry -->
+
+                <box size="0.6 0.4 0.15"/> <!-- Uses the same dimensions for collision -->
+
+            </geometry> <!-- Ends collision geometry -->
+
+        </collision> <!-- Ends collision section -->
+
+
+        <inertial> <!-- Defines the mass and inertia of the base -->
+
+            <mass value="5.0"/> <!-- Base mass is 5 kg -->
+
+            <inertia
+                ixx="0.076042"
+                ixy="0.0"
+                ixz="0.0"
+                iyy="0.159375"
+                iyz="0.0"
+                izz="0.216667"/> <!-- Correct approximate inertia for the 5 kg rectangular base -->
+
+        </inertial> <!-- Ends inertial section -->
+
+    </link> <!-- Ends base_link -->
+
+
+    <!-- ============================================================ -->
+    <!-- LEFT DRIVE WHEEL                                             -->
+    <!-- ============================================================ -->
+
+    <link name="left_wheel_link"> <!-- Creates the left driven wheel -->
+
+        <visual> <!-- Defines the appearance of the left wheel -->
+
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Rotates the cylinder so its axle points along Y -->
+
+            <geometry> <!-- Defines wheel geometry -->
+
+                <cylinder radius="0.10" length="0.05"/> <!-- Radius 10 cm and width 5 cm -->
+
+            </geometry> <!-- Ends wheel geometry -->
+
+        </visual> <!-- Ends visual section -->
+
+
+        <collision> <!-- Defines physical collision -->
+
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Matches the visual wheel orientation -->
+
+            <geometry> <!-- Defines collision geometry -->
+
+                <cylinder radius="0.10" length="0.05"/> <!-- Same dimensions as visual wheel -->
+
+            </geometry> <!-- Ends collision geometry -->
+
+        </collision> <!-- Ends collision section -->
+
+
+        <inertial> <!-- Defines physical properties of the left wheel -->
+
+            <mass value="0.5"/> <!-- Left wheel mass is 0.5 kg -->
+
+            <inertia
+                ixx="0.001354"
+                ixy="0.0"
+                ixz="0.0"
+                iyy="0.002500"
+                iyz="0.0"
+                izz="0.001354"/> <!-- Valid inertia for the cylindrical wheel -->
+
+        </inertial> <!-- Ends inertial section -->
+
+    </link> <!-- Ends left_wheel_link -->
+
+
+    <!-- ============================================================ -->
+    <!-- RIGHT DRIVE WHEEL                                            -->
+    <!-- ============================================================ -->
+
+    <link name="right_wheel_link"> <!-- Creates the right driven wheel -->
+
+        <visual> <!-- Defines the appearance of the right wheel -->
+
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Rotates the cylinder so its axle points along Y -->
+
+            <geometry> <!-- Defines wheel geometry -->
+
+                <cylinder radius="0.10" length="0.05"/> <!-- Radius 10 cm and width 5 cm -->
+
+            </geometry> <!-- Ends wheel geometry -->
+
+        </visual> <!-- Ends visual section -->
+
+
+        <collision> <!-- Defines physical collision -->
+
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Matches the visual wheel orientation -->
+
+            <geometry> <!-- Defines collision geometry -->
+
+                <cylinder radius="0.10" length="0.05"/> <!-- Same dimensions as visual wheel -->
+
+            </geometry> <!-- Ends collision geometry -->
+
+        </collision> <!-- Ends collision section -->
+
+
+        <inertial> <!-- Defines physical properties of the right wheel -->
+
+            <mass value="0.5"/> <!-- Right wheel mass is 0.5 kg -->
+
+            <inertia
+                ixx="0.001354"
+                ixy="0.0"
+                ixz="0.0"
+                iyy="0.002500"
+                iyz="0.0"
+                izz="0.001354"/> <!-- Valid inertia for the cylindrical wheel -->
+
+        </inertial> <!-- Ends inertial section -->
+
+    </link> <!-- Ends right_wheel_link -->
+
+
+    <!-- ============================================================ -->
+    <!-- SUPPORTING CASTER                                            -->
+    <!-- ============================================================ -->
+
+    <link name="caster_link"> <!-- Creates the supporting caster wheel -->
+
+        <visual> <!-- Defines the appearance of the caster -->
+
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Rotates the caster cylinder so its axle points along Y -->
+
+            <geometry> <!-- Defines caster geometry -->
+
+                <sphere radius="0.10"/> <!-- Caster radius 10 cm and width 5 cm -->
+
+            </geometry> <!-- Ends caster geometry -->
+
+        </visual> <!-- Ends visual section -->
+
+
+        <collision> <!-- Defines physical caster collision -->
+
+            <origin xyz="0 0 0" rpy="1.5708 0 0"/> <!-- Matches visual orientation -->
+
+            <geometry> <!-- Defines collision geometry -->
+
+                <sphere radius="0.10"/> <!-- Same dimensions as visual caster -->
+
+            </geometry> <!-- Ends collision geometry -->
+
+        </collision> <!-- Ends collision section -->
+
+
+        <inertial> <!-- Defines physical properties of the caster -->
+
+            <mass value="0.5"/> <!-- Caster mass is 0.5 kg -->
+
+            <inertia
+                ixx="0.001354"
+                ixy="0.0"
+                ixz="0.0"
+                iyy="0.002500"
+                iyz="0.0"
+                izz="0.001354"/> <!-- Valid inertia for the cylindrical caster -->
+
+        </inertial> <!-- Ends inertial section -->
+
+    </link> <!-- Ends caster_link -->
+
+
+    <!-- ============================================================ -->
+    <!-- LEFT WHEEL JOINT                                             -->
+    <!-- ============================================================ -->
+
+    <joint name="left_wheel_joint" type="continuous"> <!-- Creates continuously rotating left wheel joint -->
+
+        <parent link="base_link"/> <!-- Base is the parent -->
+
+        <child link="left_wheel_link"/> <!-- Left wheel is the child -->
+
+        <origin xyz="0.2 0.225 0" rpy="0 0 0"/> <!-- Places the left wheel below the base -->
+
+        <axis xyz="0 1 0"/> <!-- Wheel rotates around Y -->
+
+    </joint> <!-- Ends left wheel joint -->
+
+
+    <!-- ============================================================ -->
+    <!-- RIGHT WHEEL JOINT                                            -->
+    <!-- ============================================================ -->
+
+    <joint name="right_wheel_joint" type="continuous"> <!-- Creates continuously rotating right wheel joint -->
+
+        <parent link="base_link"/> <!-- Base is the parent -->
+
+        <child link="right_wheel_link"/> <!-- Right wheel is the child -->
+
+        <origin xyz="0.2 -0.225 0" rpy="0 0 0"/> <!-- Places the right wheel below the base -->
+
+        <axis xyz="0 1 0"/> <!-- Wheel rotates around Y -->
+
+    </joint> <!-- Ends right wheel joint -->
+
+
+    <!-- ============================================================ -->
+    <!-- CASTER JOINT                                                 -->
+    <!-- ============================================================ -->
+
+    <joint name="caster_joint" type="fix"> <!-- Creates a contfixinuously rotating supporting wheel joint -->
+
+        <parent link="base_link"/> <!-- Base is the parent -->
+
+        <child link="caster_link"/> <!-- Caster is the child -->
+
+        <origin xyz="-0.22 0 0" rpy="0 0 0"/> <!-- Places caster at the rear with the same wheel center height -->
+
+    </joint> <!-- Ends caster joint -->
+
+
+    <!-- ============================================================ -->
+    <!-- GAZEBO DIFFERENTIAL DRIVE                                    -->
+    <!-- ============================================================ -->
+
+    <gazebo> <!-- Starts Gazebo-specific configuration -->
+
+        <plugin
+            filename="gz-sim-diff-drive-system"
+            name="gz::sim::systems::DiffDrive"> <!-- Loads Gazebo's differential-drive system -->
+
+            <left_joint>left_wheel_joint</left_joint> <!-- Defines left drive wheel -->
+
+            <right_joint>right_wheel_joint</right_joint> <!-- Defines right drive wheel -->
+
+            <wheel_separation>0.45</wheel_separation> <!-- Distance between drive wheel centers -->
+
+            <wheel_radius>0.10</wheel_radius> <!-- Drive wheel radius -->
+
+            <topic>/cmd_vel</topic> <!-- Receives velocity commands from /cmd_vel -->
+
+        </plugin> <!-- Ends differential-drive plugin -->
+
+    </gazebo> <!-- Ends Gazebo configuration -->
+
+
+</robot> <!-- Ends the robot -->
