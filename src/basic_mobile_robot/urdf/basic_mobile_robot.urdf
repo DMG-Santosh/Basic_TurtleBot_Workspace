@@ -232,7 +232,7 @@
     <!-- CASTER JOINT                                                 -->
     <!-- ============================================================ -->
 
-    <joint name="caster_joint" type="fix"> <!-- Creates a contfixinuously rotating supporting wheel joint -->
+    <joint name="caster_joint" type="fixed"> <!-- Creates a contfixinuously rotating supporting wheel joint -->
 
         <parent link="base_link"/> <!-- Base is the parent -->
 
@@ -267,5 +267,132 @@
 
     </gazebo> <!-- Ends Gazebo configuration -->
 
+    <!-- ================================================ -->
+    <!-- LIDAR LINK: Represents the physical sensor frame -->
+    <!-- ================================================ -->
+
+    <link name="lidar_link"> <!-- Creates the Lidar link and TF frame-->
+
+        <visual>
+
+            <geometry>
+
+                <!-- Small visual casing: 4cm radius, 5cm tall -->
+                <cylinder radius ="0.04" length = "0.05"/>
+
+            </geometry>
+
+            <!-- Defines the sensor's appearance -->
+            <material name = "lidar_grey"> 
+
+                <!-- Sets a dark grey color -->
+                <color rgba = " 0.25 0.25 0.25 1.0"/> 
+
+            </material>
+
+        </visual>
+
+        <!-- Gives the new link physical mass and inertia -->
+        <inertial>
+
+           <!-- Sets the sensor mass to 0.1 kg --> 
+            <mass value = "0.1"/>
+
+            <inertia
+                ixx = "0.000061" ixy = "0.0" ixz ="0.0"
+                iyy = "0.000061" iyz = "0.0"
+                izz = "0.000080"/> <!-- Positive approximate inertia values for the small sensor casing -->
+        
+        </inertial> 
+
+    </link> <!-- Ends the LiDAR link -->
+
+    <!-- ================================================ -->
+    <!-- LIDAR JOINT: Attaches the sensor to the robot    -->
+    <!-- ================================================ -->
+
+    <joint name="lidar_joint" type="fixed"> <!-- Makes the sensor fixed to the robot body -->
+        
+        <parent link="base_link"/> <!-- Sets the robot body as the parent -->
+        
+        <child link="lidar_link"/> <!-- Sets the LiDAR frame as the child -->
+        
+        <origin xyz="0 0 0.12" rpy="0 0 0"/> <!-- Places the sensor 12 cm above the base_link origin -->
+    
+    </joint> <!-- Ends the fixed joint -->
+
+
+    <!-- ================================================ -->
+    <!-- GAZEBO LIDAR SENSOR                              -->
+    <!-- ================================================ -->
+
+    <!-- Attaches this Gazebo sensor configuration to lidar_link -->
+    <gazebo reference = "lidar_link">
+
+        <!-- Creates a simulated GPU-based 2D LiDAR -->
+        <sensor name = "gpu_lidar" type = "gpu_lidar">
+
+            <!-- Places the sensor at the center of lidar_link -->
+            <pose> 0 0 0 0 0 0 </pose>
+            
+            <!-- Requests the Gazebo sensor topic named /scan -->
+            <topic>/scan</topic>
+
+            <!-- Identifies the frame associated with the laser scan -->
+            <gz_frame_id>lidar_link</gz_frame_id>
+
+            <!-- Requests 10 scans per second -->
+            <update_rate>10</update_rate>
+
+            <!-- Keeps the sensor enabled -->
+            <always_on>true</always_on>
+
+            <!-- Enables Gazebo's sensor visualization -->
+            <visualize>true</visualize>
+
+            <!-- Starts the LiDAR measurement configuration -->
+            <lidar>
+
+                <!-- Defines the directions measured by the sensor -->
+                <scan>
+
+                    <!-- Configures the horizontal, 2D scan -->
+                    <horizontal>
+
+                        <!-- Requests 360 angular samples per scan -->
+                        <samples>360</samples>
+
+                        <!-- Uses one measurement sample per configured step -->
+                        <resolution>1</resolution>
+
+                        <!-- Starts at approximately -180 degrees -->
+                        <min_angle>-3.14159265</min_angle>
+
+                        <!-- Ends at approximately +180 degrees -->
+                        <max_angle>3.14159265</max_angle>
+
+                    </horizontal>
+
+                </scan>
+
+                <!-- Defines the usable distance measurement range -->
+                <range>
+
+                    <!-- Sets the minimum range to 12 cm -->
+                    <min>0.12</min>
+
+                    <!-- Sets the maximum range to 3.5 m -->
+                    <max>3.5</max>
+
+                    <!-- Sets the requested distance resolution to 1 cm -->
+                    <resolution>0.01</resolution>
+
+                </range>
+
+            </lidar><!-- Ends the LiDAR measurement configuration -->
+
+        </sensor><!-- Ends the simulated sensor -->
+
+    </gazebo><!-- Ends the Gazebo LiDAR configuration -->
 
 </robot> <!-- Ends the robot -->

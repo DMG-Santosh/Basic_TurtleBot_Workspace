@@ -17,6 +17,8 @@ def generate_launch_description():  # Defines the function that creates the laun
 
     urdf_file = os.path.join(package_dir, 'urdf', 'basic_mobile_robot.urdf')  # Builds the complete path to our URDF file
 
+    world_file = os.path.join(package_dir, 'worlds', 'slam_world.sdf')
+
     with open(urdf_file, 'r') as file:  # Opens the URDF file in read mode
 
         robot_description = file.read()  # Reads the complete URDF text into a Python variable
@@ -32,7 +34,7 @@ def generate_launch_description():  # Defines the function that creates the laun
 
         ExecuteProcess(  # Starts the Gazebo simulation process
 
-            cmd=['gz', 'sim', '-r', 'empty.sdf'],  # Runs Gazebo Sim with the empty world and starts it immediately
+            cmd=['gz', 'sim', '-r', world_file],  # Runs Gazebo Sim with the empty world and starts it immediately
             output='screen'  # Shows Gazebo output in the terminal
         ),
 
@@ -65,8 +67,10 @@ def generate_launch_description():  # Defines the function that creates the laun
 
             arguments=[ # Provides the topic bridge configuration
 
-                '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist' # Bridges ROS 2 Twist to Gazebo Twist for /cmd_vel
+                # ] — ROS to Gazebo, [ — Gazebo to ROS, @ — bidirectional bridging
 
+                '/cmd_vel@geometry_msgs/msg/Twist]gz.msgs.Twist', # Bridges ROS 2 Twist to Gazebo Twist for /cmd_vel
+                '/scan@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan'
             ],
 
             output='screen' # Shows bridge messages in the terminal
@@ -74,7 +78,7 @@ def generate_launch_description():  # Defines the function that creates the laun
 
         TimerAction(  # Delays the robot spawning slightly so Gazebo has time to start
 
-            period=3.0,  # Waits for 3 seconds
+            period=5.0,  # Waits for 5 seconds
 
             actions=[  # Actions to run after the delay
 

@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+
+<sdf version="1.9">
+
+    <!-- Creates the simulation world -->
+    <world name="slam_world">
+
+        <!-- PHYSICS SYSTEM: Simulates physical interactions -->
+        <physics name="physics_settings" type="ignored">
+
+            <max_step_size>0.001</max_step_size>
+
+            <real_time_factor>1.0</real_time_factor>
+
+        </physics>
+ 
+        <!-- PHYSICS SYSTEM -->
+        <!-- Enables the physics system -->
+        <plugin filename="gz-sim-physics-system"
+                name="gz::sim::systems::Physics"/>
+
+        <!-- USER COMMANDS SYSTEM -->
+        <!-- Enables commands such as spawning entities -->
+        <plugin filename="gz-sim-user-commands-system"
+                name="gz::sim::systems::UserCommands"/>
+
+        <!-- SCENE BROADCASTER SYSTEM -->
+        <!-- Makes world scene information available to the GUI -->
+        <plugin filename="gz-sim-scene-broadcaster-system"
+                name="gz::sim::systems::SceneBroadcaster"/>
+
+        <!-- LIDAR AND OTHER SENSOR SYSTEMS -->
+        <!-- Selects the rendering engine used for GPU sensors -->
+        <plugin filename="gz-sim-sensors-system"
+                name="gz::sim::systems::Sensors">
+
+            <render_engine>ogre2</render_engine>
+
+        </plugin>
+
+
+        <!-- LIGHTING -->
+        <light type="directional" name="sun">
+
+            <!-- This enables the light shadows -->
+            <cast_shadows>true</cast_shadows>
+
+            <!-- This is the light pose as (10 meters above the the origin) -->
+            <pose>0 0 10 0 0 0</pose>
+
+            <!-- This specifies the diffuse colour of the light(R, G, B, A, normally represented between 0 and 1) -->
+            <diffuse>0.8 0.8 0.8 1</diffuse>
+
+            <!-- Specular lighting contributes to highlights and shiny-looking reflections -->
+            <specular>0.2 0.2 0.2 1</specular>
+
+            <!-- Attenuation means weakening or reduction of something as it travels farther away from its source -->
+            <attenuation>
+
+                <!-- Range of light is 1000 meters -->
+                <range>1000</range>
+
+                <constant>0.9</constant>
+
+                <linear>0.01</linear>
+
+                <quadratic>0.001</quadratic>
+
+            </attenuation>
+
+            <direction>-0.5 0.1 -0.9</direction>
+
+        </light>
+
+        <!-- GROUND PLANE -->
+        <model name="ground_plane">
+
+            <static>true</static>
+
+            <link name="ground_link">
+
+                <collision name="collision">
+
+                    <geometry>
+
+                        <plane>
+
+                            <!-- Specifies that the plane is horizontal, with its normal pointing upward. -->
+                            <normal>0 0 1</normal>
+
+                            <!-- Specifies the plane's dimensions for visualization. -->
+                            <size>100 100</size>
+
+                        </plane>
+
+                    </geometry>
+
+                </collision>
+
+                <visual name="visual">
+
+                    <geometry>
+
+                        <plane>
+
+                            
+                            <normal>0 0 1</normal>
+
+                            
+                            <size>100 100</size>
+
+                        </plane>
+
+                    </geometry>
+
+                    <material>
+
+                        <!-- Controls the material's ambient-light component -->
+                        <ambient>0.8 0.8 0.8 1</ambient>
+
+                        <!-- Controls the ground's diffuse response to light -->
+                        <diffuse>0.8 0.8 0.8 1</diffuse>
+
+                        <!-- controls the highlights that contribute to a shiny appearance -->
+                        <specular>0.1 0.1 0.1 1</specular>
+
+                    </material>
+
+                </visual>
+
+            </link>
+
+        </model>
+
+    </world>
+
+</sdf>      
